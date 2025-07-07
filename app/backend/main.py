@@ -9,10 +9,11 @@ import pandas as pd
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.append(project_root)
 
-# Load the model (adjust path if needed)
+# Load the model
 MODEL_PATH = os.path.join(project_root, "app/backend/model/model_lightgbm_Optuna_retrained.pkl")
 model = joblib.load(MODEL_PATH)
 
+# FastAPI app
 app = FastAPI()
 
 # ----- INPUT SCHEMA -----
@@ -42,4 +43,24 @@ class PredictionOutput(BaseModel):
 
 # ----- PREDICTION ROUTE -----
 @app.post("/predict", response_model=PredictionOutput)
-def predict(data: Input
+def predict(data: InputData):
+    features = {
+        "habitableSurface": data.area,
+        "bedroomCount": data.rooms_number,
+        "buildingCondition": data.building_state or "UNKNOWN",
+        "hasGarden": data.garden if data.garden is not None else False,
+        "gardenSurface": data.garden_area or 0,
+        "hasTerrace": data.terrace if data.terrace is not None else False,
+        "postCode": data.zip_code,
+        "type": data.property_type
+    }
+
+    df = pd.DataFrame([features])
+    prediction = model.predict(df)[0]
+
+    return PredictionOutput(predicted_price=round(prediction, 2))
+
+# ----- HEALTH CHECK -----
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "model_loaded": model is not None}
