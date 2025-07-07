@@ -1,11 +1,20 @@
-# This file contains the code for the API
+from fastapi import FastAPI, HTTPException
+from typing import List, Union
 
-# Define the API endpoints
+from preprocessing.clean_data import preprocess_input, PropertyInput
+from predict.prediction import predict
 
-# Accept incoming requests and validate input with Pydantic models
+app = FastAPI()
 
-# Call the preprocessing functions from preprocessing.py
+@app.post("/predict")
+def predict_price(properties: Union[PropertyInput, List[PropertyInput]]):
+    try:
+        input_df = preprocess_input(properties)
+        preds = predict(input_df)
+        return {"predictions": preds}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-# Call the prediction function from prediction.py
-
-# Return the prediction response (likely JSON)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
