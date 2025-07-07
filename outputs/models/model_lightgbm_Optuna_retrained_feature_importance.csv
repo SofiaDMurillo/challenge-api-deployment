@@ -1,9 +1,9 @@
 Feature,Importance
-habitableSurface,11750
-gardenSurface,6701
-postCode,5708
-bedroomCount,5122
-buildingCondition,3192
-hasTerrace,1589
-type,1304
-hasGarden,984
+habitableSurface,3563
+gardenSurface,1737
+bedroomCount,1558
+postCode,1426
+buildingCondition,1033
+hasTerrace,540
+type,446
+hasGarden,301
