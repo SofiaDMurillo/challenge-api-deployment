@@ -3,16 +3,18 @@ from pydantic import BaseModel, Field
 from typing import Optional, Literal
 import pandas as pd
 import joblib
-import os, sys
+import os
 
-# Add the project root to the Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
-sys.path.append(project_root)
+# Définir le chemin du modèle à partir de ce fichier
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, "model")
+MODEL_FILENAME = "model_lightgbm_Optuna_retrained.pkl"
+MODEL_PATH = os.path.join(MODEL_DIR, MODEL_FILENAME)
 
-# Load the model
-MODEL_PATH = os.path.join(project_root, "app/backend/model/model_lightgbm_Optuna_retrained.pkl")
+# Charger le modèle
 model = joblib.load(MODEL_PATH)
 print("Model expects features:", model.feature_name_)
+
 
 # Expected columns
 expected_columns = [
