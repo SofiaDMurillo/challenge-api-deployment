@@ -16,7 +16,7 @@ model = joblib.load(MODEL_PATH)
 print("Model expects features:", model.feature_name_)
 
 
-# Expected columns
+# Expected columns from the model
 expected_columns = [
     "habitableSurface",
     "bedroomCount",
@@ -30,6 +30,7 @@ expected_columns = [
 
 app = FastAPI()
 
+# Input data from the api request
 class InputData(BaseModel):
     area: int = Field(..., alias="area")
     property_type: Literal["APARTMENT", "HOUSE", "OTHERS"] = Field(..., alias="property-type")
@@ -67,14 +68,14 @@ def predict(data: InputData):
         "type": data.property_type
     }
 
-    # Création du DataFrame avec les colonnes dans l'ordre attendu
+    # Create the DataFrame with columns in the expected order
     df = pd.DataFrame([features])[expected_columns]
 
-    # Conversion explicite des colonnes catégorielles
+    # Explicit conversion of categorical columns
     df["type"] = df["type"].astype("category")
     df["buildingCondition"] = df["buildingCondition"].astype("category")
 
-    # Prédiction
+    # Get the predicted price for the single input row (first element of the output array)
     prediction = model.predict(df)[0]
 
     return PredictionOutput(predicted_price=round(float(prediction), 2))
