@@ -1,4 +1,4 @@
-# app/backend/Dockerfile.azure
+# app/backend/Dockerfile.render
 FROM python:3.11-slim
 
 # Fix render error libgomp.so.1
