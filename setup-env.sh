@@ -85,11 +85,14 @@ echo '{
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe"
 }' > .vscode/settings.json
 
-pip install "uvicorn[standard]"
+#pip install "uvicorn[standard]"
 
 # GPU support with NVIDIA XGBoost
-pip uninstall -y xgboost
-pip install --upgrade --extra-index-url https://pypi.nvidia.com xgboost
+# pip uninstall -y xgboost
+# pip install --upgrade --extra-index-url https://pypi.nvidia.com xgboost
+
+pip install "fastapi==0.111.0" "uvicorn[standard]==0.29.0"
+
 
 # === Done ===
 print_green "Setup complete. Your virtual environment is ready!"

@@ -1,0 +1,18 @@
+{
+  "area": 120,
+  "property-type": "HOUSE",
+  "rooms-number": 4,
+  "zip-code": 1300,
+  "land-area": null,
+  "garden": true,
+  "garden-area": 50,
+  "equipped-kitchen": true,
+  "full-address": null,
+  "swimming-pool": false,
+  "furnished": false,
+  "open-fire": false,
+  "terrace": true,
+  "terrace-area": 20,
+  "facades-number": 3,
+  "building-state": "GOOD"
+}
