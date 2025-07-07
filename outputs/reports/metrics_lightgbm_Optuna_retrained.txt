@@ -1,0 +1,8 @@
+LightGBM Optuna Regression Metrics Report
+
+Train_R2: 0.805
+Train_RMSE: 82767.184
+Train_MAE: 58691.215
+Test_R2: 0.741
+Test_RMSE: 95858.104
+Test_MAE: 67212.737

@@ -1,4 +1,3 @@
-
 from lightgbm import early_stopping, log_evaluation, LGBMRegressor
 import pandas as pd
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
@@ -7,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import pickle
 import optuna
+import json
 
 def main(optimize=False):
     # Load data
@@ -69,10 +69,8 @@ def main(optimize=False):
         study.optimize(objective, n_trials=50)
         print("✅ Best parameters found:")
         print(study.best_params)
-
         final_params = study.best_params
     else:
-        # Default parameters (your original ones)
         final_params = {
             'n_estimators': 300,
             'learning_rate': 0.05,
@@ -104,7 +102,6 @@ def main(optimize=False):
         'Test_MAE': mean_absolute_error(y_test, y_test_pred)
     }
 
-    # Print metrics
     print("✅ LightGBM Optuna Regression Metrics:")
     for key, value in metrics.items():
         print(f"{key}: {value:.3f}")
@@ -114,6 +111,12 @@ def main(optimize=False):
     model_path.mkdir(parents=True, exist_ok=True)
     with open(model_path / 'model_lightgbm_Optuna_retrained.pkl', 'wb') as file:
         pickle.dump(model, file)
+    
+    # Save feature names
+    features_file = model_path / 'model_lightgbm_Optuna_retrained_features.json'
+    with open(features_file, 'w') as f:
+        json.dump(list(X_train_full.columns), f, indent=4)
+    print(f"✅ Feature list saved to {features_file}")
 
     # Save metrics report
     metrics_path = base_path / 'outputs' / 'reports'
@@ -134,6 +137,23 @@ def main(optimize=False):
     print("\n✅ Feature Importances:")
     print(importance_df)
 
+    # Save feature names
+    features_file = model_path / 'model_lightgbm_Optuna_retrained_features.json'
+    with open(features_file, 'w') as f:
+        json.dump(list(X_train_full.columns), f, indent=4)
+    print(f"✅ Feature list saved to {features_file}")
+
+    # Save feature importances
+    feature_importance_file = model_path / 'model_lightgbm_Optuna_retrained_feature_importance.csv'
+    importance_df.to_csv(feature_importance_file, index=False)
+    print(f"✅ Feature importances saved to {feature_importance_file}")
+
+    # Save Optuna params if applicable
+    if optimize:
+        params_file = model_path / 'model_lightgbm_Optuna_retrained_params.json'
+        with open(params_file, 'w') as f:
+            json.dump(final_params, f, indent=4)
+        print(f"✅ Optuna parameters saved to {params_file}")
+
 if __name__ == "__main__":
-    # Set optimize=True if you want to run Optuna hyperparameter search
     main(optimize=True)

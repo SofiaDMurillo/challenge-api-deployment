@@ -1,0 +1,10 @@
+[
+    "habitableSurface",
+    "bedroomCount",
+    "buildingCondition",
+    "hasGarden",
+    "gardenSurface",
+    "hasTerrace",
+    "postCode",
+    "type"
+]
