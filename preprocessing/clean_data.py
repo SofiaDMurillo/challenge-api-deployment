@@ -28,7 +28,7 @@ def preprocess_input(data: Union[PropertyInput, List[PropertyInput]]) -> pd.Data
     categorical_features = ['postCode', 'type', 'province', 'subtype', 'region']
     expected_columns = numeric_features + categorical_features
     
-    # If is a list of properties then it goes into a loop reading all the properties data
+    # If it is a list of properties then it goes into a loop reading all the properties data
 
     if isinstance(data, list):
         records = [item.dict() for item in data]
@@ -37,10 +37,13 @@ def preprocess_input(data: Union[PropertyInput, List[PropertyInput]]) -> pd.Data
 
     input_df = pd.DataFrame(records)
 
+    # Code raises error if anything is missing (i.e. every field is mandatory). I did not set rules around this for simplification uroses
     missing_cols = set(expected_columns) - set(input_df.columns)
     if missing_cols:
         raise ValueError(f"Missing columns in input data: {missing_cols}")
-
+    
+    # reorders and selects the columns of the DataFrame input_df to match the exact order and set of columns defined in expected_columns.
+    # this line ensures that: Only the expected columns are kept AND the order of columns is exactly as expected by the model
     input_df = input_df[expected_columns]
 
     for col in categorical_features:
