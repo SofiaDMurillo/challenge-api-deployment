@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = 'https://your-api-service.onrender.com/predict'
+API_URL = 'https://immoeliza-api-66pt.onrender.com/'
 
 st.title("ImmoEliza Price Prediction")
 
