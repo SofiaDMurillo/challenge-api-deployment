@@ -7,18 +7,46 @@ st.title("ImmoEliza Price Prediction")
 
 # Input form
 with st.form("prediction_form"):
-    habitableSurface = st.number_input("Habitable Surface (float)", value=120.5)
+    habitableSurface = st.number_input("Habitable Surface (int)", value=200)
     bedroomCount = st.number_input("Bedroom Count (int)", value=3, step=1)
-    buildingCondition = st.number_input("Building Condition (int)", value=4, step=1)
+    building_condition_options = {
+    1: "1 - To Restore",
+    2: "2 - To Renovate",
+    3: "3 - Good",
+    4: "4 - Just Renovated",
+    5: "5 - As New"
+    }
+    buildingCondition = st.selectbox(
+    "Building Condition",
+    options=list(building_condition_options.keys()),
+    format_func=lambda x: building_condition_options[x],
+    index=2  # default to 3 - Good (index starts at 0)
+    )
     hasGarden = st.selectbox("Has Garden?", options=[0, 1])
     gardenSurface = st.number_input("Garden Surface (float)", value=50.0)
     hasTerrace = st.selectbox("Has Terrace?", options=[0, 1])
-    epcScore = st.number_input("EPC Score (float)", value=180.0)
+    epc_score_options = {
+    9: "A++",
+    8: "A+",
+    7: "A",
+    6: "B",
+    5: "C",
+    4: "D",
+    3: "E",
+    2: "F",
+    1: "G"
+    }
+    epcScore = st.selectbox(
+    "EPC Score",
+    options=list(epc_score_options.keys()),
+    format_func=lambda x: f"{x} - {epc_score_options[x]}",
+    index=5  # default to 4 - D (index starts at 0)
+    )   
     hasParking = st.selectbox("Has Parking?", options=[0, 1])
-    postCode = st.number_input("Post Code (int)", value=1000, step=1)
-    type_ = st.text_input("Type (string)", value="Apartment")
+    postCode = st.number_input("Post Code (int)", value=1050, step=1)
+    type_ = st.text_input("Type (string)", value="House")
     province = st.text_input("Province (string)", value="Brussels")
-    subtype = st.text_input("Subtype (string)", value="Penthouse")
+    subtype = st.text_input("Subtype (string)", value="House")
     region = st.text_input("Region (string)", value="Brussels-Capital")
     
     submit = st.form_submit_button("Predict")
