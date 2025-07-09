@@ -98,7 +98,8 @@ if submit:
         response = requests.post(API_URL, json=data)
         if response.status_code == 200:
             prediction = response.json().get("predictions")
-            formatted_price = f"€ {prediction:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+            prediction_value = prediction[0]  # safely get the first (and only) prediction
+            formatted_price = f"€ {prediction_value:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             st.success(f"Predicted price: {formatted_price}")
         else:
             st.error(f"API error: {response.status_code} - {response.text}")
