@@ -1,12 +1,6 @@
 import streamlit as st
 import requests
-import locale
 
-# Set to a reasonable Euro locale — fallback to en_US if unavailable
-try:
-    locale.setlocale(locale.LC_ALL, 'fr_BE.UTF-8')
-except locale.Error:
-    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 API_URL = 'https://immoeliza-api-66pt.onrender.com/predict'
 
@@ -104,13 +98,7 @@ if submit:
         response = requests.post(API_URL, json=data)
         if response.status_code == 200:
             prediction = response.json().get("predictions")
-
-            # Format with euro sign, comma for thousands, dot for decimals
-            try:
-                formatted_price = locale.currency(prediction, symbol=True, grouping=True)
-            except Exception:
-                formatted_price = f"€ {prediction:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-
+            formatted_price = f"€ {prediction:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
             st.success(f"Predicted price: {formatted_price}")
         else:
             st.error(f"API error: {response.status_code} - {response.text}")
